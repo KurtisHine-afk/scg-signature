@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Spartan Email Signature Creator</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<style>
+*{box-sizing:border-box}
+:root{--teal:#234F59;--deep:#1A2E35;--blue:#0076A6;--cyan:#05C1ED;--ink:#2E3A3E;--sub:#4A5559;--mute:#6B777A;--line:#DDE3E5;--mist:#F3F6F7}
+body{margin:0;font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Arial,Helvetica,sans-serif;color:var(--ink);background:var(--mist);font-size:15px;line-height:1.5}
+a{color:var(--blue)}
+.top{background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;padding:18px 32px}
+.top img{height:44px;display:block}
+.top .tag{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--mute)}
+.seam{height:3px;background:var(--cyan)}
+.wrap{max-width:1180px;margin:0 auto}
+.hero{padding:40px 32px 8px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--blue)}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;color:var(--teal);font-size:34px;line-height:1.15;margin:8px 0 8px}
+.hero p{margin:0;color:var(--sub);max-width:640px}
+.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:28px;padding:24px 32px 40px;align-items:start}
+.card{background:#fff;border:1px solid var(--line);padding:26px 28px}
+fieldset{border:0;margin:0 0 6px;padding:0}
+legend{float:left;width:100%;display:flex;align-items:center;gap:12px;font-family:Georgia,serif;font-weight:700;font-size:18px;color:var(--teal);margin-bottom:10px;padding:0}
+legend .n{width:28px;height:28px;border:2px solid var(--cyan);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:700 13px Arial;color:var(--teal)}
+fieldset+fieldset{border-top:1px solid var(--line);padding-top:22px;margin-top:22px}
+legend+*{clear:both}
+label{display:block;font-size:13px;font-weight:600;color:var(--sub);margin:14px 0 6px}
+label .opt{font-weight:400;color:var(--mute)}
+input[type=text],input[type=email],input[type=tel]{width:100%;padding:12px 13px;border:1px solid #BFC7CA;font:16px inherit;font-family:inherit;color:var(--ink);background:#fff;border-radius:2px}
+input:focus{outline:3px solid rgba(5,193,237,.45);outline-offset:0;border-color:var(--blue)}
+.hint{font-size:12.5px;color:var(--mute);margin-top:5px}
+.warn{font-size:12.5px;color:#8A5A00;background:#FFF7E3;border-left:3px solid #C98A00;padding:7px 10px;margin-top:8px}
+.fixed{display:flex;justify-content:space-between;background:var(--mist);border:1px dashed #C9D2D5;padding:10px 13px;font-size:14px;margin-top:14px}
+.brands{display:grid;gap:10px;margin-top:4px}
+.brand{position:relative;display:flex;align-items:center;gap:14px;border:1px solid #CBD3D6;padding:12px 14px;cursor:pointer;background:#fff;margin:0;font-weight:400}
+.brand input{position:absolute;opacity:0}
+.brand img{width:140px;height:auto;display:block}
+.brand span{font-size:13px;color:var(--sub)}
+.brand:has(input:checked){border:2px solid var(--teal);padding:11px 13px;box-shadow:inset 4px 0 0 var(--cyan)}
+.brand:has(input:focus-visible){outline:3px solid rgba(5,193,237,.45)}
+.sticky{position:sticky;top:20px}
+.pv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mode button{font:600 12px Arial;border:1px solid #CBD3D6;background:#fff;color:var(--sub);padding:6px 10px;cursor:pointer}
+.mode button[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#fff}
+#preview{border:1px solid var(--line);padding:30px 32px;background:#fff;overflow-x:auto;min-height:250px}
+#preview.dark{background:#1F1F1F}
+.mailhead{font-size:13px;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:18px}
+.dark .mailhead{color:#9AA5A8;border-color:#333}
+.actions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}
+button.primary{font:700 16px Arial;letter-spacing:.3px;background:var(--teal);color:#fff;border:0;padding:16px 22px;cursor:pointer}
+button.primary:hover{background:var(--deep)}
+button.secondary{font:600 14px Arial;background:#fff;color:var(--teal);border:1px solid var(--teal);padding:14px 16px;cursor:pointer}
+#status{min-height:22px;margin-top:10px;font-size:14px;color:#1E6B4F;font-weight:600}
+#filewarn{display:none}
+.tabs{margin-top:22px}
+[role=tablist]{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--line)}
+[role=tab]{font:600 13.5px Arial;background:none;border:0;border-bottom:3px solid transparent;padding:11px 14px;color:var(--sub);cursor:pointer;margin-bottom:-1px}
+[role=tab][aria-selected=true]{color:var(--teal);border-bottom-color:var(--cyan)}
+[role=tabpanel]{padding:16px 2px 0;font-size:14.5px}
+[role=tabpanel] ol{margin:0;padding-left:20px} [role=tabpanel] li{margin:5px 0}
+[role=tabpanel] .hint{margin-top:10px}
+footer{padding:4px 32px 40px;font-size:12px;color:var(--mute)}
+footer .wrap{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:900px){.grid{grid-template-columns:1fr;padding:18px 16px 30px}.sticky{position:static}.hero{padding:28px 16px 4px}h1{font-size:27px}.top .wrap{padding:14px 16px}.top img{height:34px}.top .tag{display:none}.card{padding:22px 18px}#preview{padding:22px 16px}.actions{grid-template-columns:1fr}footer{padding:4px 16px 30px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><img src="assets/scg-logo.svg" alt="Spartan Capital Group"><span class="tag">Email signature creator</span></div></header>
+<div class="seam" aria-hidden="true"></div>
+<main>
+<section class="hero wrap">
+  <div class="eyebrow">Welcome to Spartan Capital Group</div>
+  <h1>Create your Spartan email signature</h1>
+  <p>Answer three quick questions. Your signature builds as you type, and you can copy it straight into your email app.</p>
+</section>
+<div class="grid wrap">
+  <form class="card" id="form" novalidate onsubmit="return false">
+    <fieldset>
+      <legend><span class="n" aria-hidden="true">1</span>Your details</legend>
+      <label for="name">Full name</label>
+      <input type="text" id="name" autocomplete="name" placeholder="e.g. Jordan Example" required>
+      <label for="title">Title</label>
+      <input type="text" id="title" list="titles" autocomplete="organization-title" placeholder="Choose or type your title" aria-describedby="title-hint">
+      <datalist id="titles">
+        <option value="Strategic Business Partner"><option value="Independent Strategic Business Partner"><option value="Executive Recruiter"><option value="Senior Executive Recruiter"><option value="Recruiter"><option value="Talent Acquisition Specialist"><option value="Account Executive">
+      </datalist>
+      <div class="hint" id="title-hint">Pick a suggestion or type your exact title.</div>
+      <label for="email">Company email</label>
+      <input type="email" id="email" autocomplete="email" placeholder="first.last@thespartancapitalgroup.com" aria-describedby="email-warn">
+      <div class="warn" id="email-warn" role="status" hidden>Use your @thespartancapitalgroup.com address unless you've been told otherwise.</div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="n" aria-hidden="true">2</span>Phone numbers</legend>
+      <label for="direct">Direct line <span class="opt">(optional)</span></label>
+      <input type="tel" id="direct" autocomplete="tel" inputmode="tel" placeholder="000-000-0000">
+      <label for="mobile">Mobile <span class="opt">(optional)</span></label>
+      <input type="tel" id="mobile" autocomplete="tel" inputmode="tel" placeholder="000-000-0000">
+      <div class="fixed"><span>Main line</span><strong>800-340-9118</strong></div>
+      <div class="hint">The main line, website and headquarters address are added for you.</div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="n" aria-hidden="true">3</span>Brand</legend>
+      <div class="brands" role="radiogroup" aria-label="Brand">
+        <label class="brand"><input type="radio" name="brand" value="scg" checked><img src="assets/spartan-capital-group-signature-logo-2x.png" alt=""><span>Spartan Capital Group<br>(default)</span></label>
+        <label class="brand"><input type="radio" name="brand" value="sas"><img src="assets/spartan-advisory-solutions-signature-logo-2x.png" alt=""><span>Spartan Advisory Solutions</span></label>
+        <label class="brand"><input type="radio" name="brand" value="ss"><img src="assets/spartan-strategies-signature-logo-2x.png" alt=""><span>Spartan Strategies</span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <section class="sticky" aria-labelledby="pv-title">
+    <div class="card">
+      <div class="pv-head"><div class="eyebrow" id="pv-title">Live preview</div></div>
+      <div id="preview" aria-live="polite"><div class="mailhead">Best regards,</div><div id="sig"></div></div>
+      <div class="warn" id="filewarn">You're viewing this page from a local file, so the logo in a copied signature won't be visible to recipients. Use the hosted link to create your signature.</div>
+      <div class="actions"><button type="button" class="primary" id="copy">Copy signature</button><button type="button" class="secondary" id="copytext">Copy plain-text version (for phones)</button></div>
+      <div id="status" role="status" aria-live="polite"></div>
+
+      <div class="tabs">
+        <div class="eyebrow" style="margin-bottom:8px">Then add it to your email</div>
+        <div role="tablist" aria-label="Setup instructions">
+          <button role="tab" id="t1" aria-controls="p1" aria-selected="true">Outlook (new / web)</button>
+          <button role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1">Outlook classic</button>
+          <button role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1">Gmail</button>
+          <button role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1">Apple Mail</button>
+          <button role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1">iPhone / Android</button>
+        </div>
+        <div role="tabpanel" id="p1" aria-labelledby="t1"><ol><li>Open <b>Settings</b> (gear icon) &gt; <b>Accounts</b> &gt; <b>Signatures</b>.</li><li>Add a new signature and name it (e.g. "Spartan").</li><li>Click in the editor and paste (Ctrl+V / Cmd+V).</li><li>Set it as the default for <b>new messages</b> and <b>replies/forwards</b>, then <b>Save</b>.</li></ol><div class="hint">New Outlook for Mac: Outlook menu &gt; Settings &gt; Signatures.</div></div>
+        <div role="tabpanel" id="p2" aria-labelledby="t2" hidden><ol><li>Go to <b>File</b> &gt; <b>Options</b> &gt; <b>Mail</b> &gt; <b>Signatures…</b></li><li>Click <b>New</b>, name it, and paste into <b>Edit signature</b>.</li><li>Under <b>Choose default signature</b>, pick it for <b>New messages</b> and <b>Replies/forwards</b>.</li><li>Click <b>OK</b>.</li></ol></div>
+        <div role="tabpanel" id="p3" aria-labelledby="t3" hidden><ol><li>Click <b>Settings</b> (gear) &gt; <b>See all settings</b>.</li><li>On <b>General</b>, find <b>Signature</b> &gt; <b>Create new</b>, and paste.</li><li>Under <b>Signature defaults</b>, choose it for new emails and replies.</li><li>Scroll down and click <b>Save Changes</b>.</li></ol></div>
+        <div role="tabpanel" id="p4" aria-labelledby="t4" hidden><ol><li>Open <b>Mail</b> &gt; <b>Settings</b> &gt; <b>Signatures</b>.</li><li>Select your account and click <b>+</b>.</li><li>Uncheck <b>Always match my default message font</b>, then paste.</li><li>Choose it in <b>Choose Signature</b>, and close the window.</li></ol></div>
+        <div role="tabpanel" id="p5" aria-labelledby="t5" hidden><p style="margin:0 0 8px">Phone apps only support text signatures. Click <b>Copy plain-text version</b>, then:</p><ol><li><b>iPhone Mail:</b> Settings &gt; Apps &gt; Mail &gt; Signature.</li><li><b>Outlook app:</b> profile picture &gt; Settings &gt; Signature.</li><li><b>Gmail app:</b> Settings &gt; your account &gt; Mobile signature (Android) or Signature settings (iPhone).</li></ol></div>
+        <div class="hint">Send yourself a test email to check it.</div>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+<footer><div class="wrap"><span>Privacy: everything stays in your browser. Nothing you type is stored, sent anywhere, or tracked.</span><span>Spartan Capital Group · 7550 S. Saginaw, Grand Blanc, MI 48439 · 800-340-9118</span></div></footer>
+<script>
+"use strict";
+const TEMPLATE = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\" style=\"border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;max-width:560px;font-family:Arial, Helvetica, sans-serif;\">\n  <tr><td style=\"padding:0 0 3px 0;font-family:Georgia, 'Times New Roman', serif;font-size:18px;line-height:22px;font-weight:bold;color:#234F59;\">{{NAME}}</td></tr>\n  <tr><td style=\"padding:0;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;color:#4A5559;\">{{TITLE}}</td></tr>\n  <tr><td style=\"padding:0;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:18px;font-weight:bold;color:#234F59;\">{{COMPANY}}</td></tr>\n  <tr><td style=\"padding:11px 0 10px 0;line-height:0;font-size:0;\">\n    <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" role=\"presentation\" style=\"border-collapse:collapse;\"><tr><td width=\"48\" height=\"2\" bgcolor=\"#05C1ED\" style=\"width:48px;height:2px;line-height:2px;font-size:0;background-color:#05C1ED;\">&nbsp;</td></tr></table>\n  </td></tr>\n  <tr><td style=\"padding:0;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:20px;color:#2E3A3E;\">\n<!-- OPTIONAL START: DIRECT --><span style=\"white-space:nowrap;\"><span style=\"color:#6B777A;font-size:11px;letter-spacing:0.5px;\">DIRECT</span>&nbsp;<a href=\"tel:{{DIRECT}}\" style=\"color:#2E3A3E;text-decoration:none;\">{{DIRECT}}</a></span><span style=\"color:#B9C2C5;\">&nbsp;&nbsp;|&nbsp;&nbsp;</span><!-- OPTIONAL END: DIRECT -->\n<!-- OPTIONAL START: MOBILE --><span style=\"white-space:nowrap;\"><span style=\"color:#6B777A;font-size:11px;letter-spacing:0.5px;\">MOBILE</span>&nbsp;<a href=\"tel:{{MOBILE}}\" style=\"color:#2E3A3E;text-decoration:none;\">{{MOBILE}}</a></span><span style=\"color:#B9C2C5;\">&nbsp;&nbsp;|&nbsp;&nbsp;</span><!-- OPTIONAL END: MOBILE -->\n<span style=\"white-space:nowrap;\"><span style=\"color:#6B777A;font-size:11px;letter-spacing:0.5px;\">MAIN</span>&nbsp;<a href=\"tel:800-340-9118\" style=\"color:#2E3A3E;text-decoration:none;\">800-340-9118</a></span>\n  </td></tr>\n  <tr><td style=\"padding:0;font-family:Arial, Helvetica, sans-serif;font-size:13px;line-height:20px;color:#2E3A3E;\">\n<span style=\"white-space:nowrap;\"><a href=\"mailto:{{EMAIL}}\" style=\"color:#0076A6;text-decoration:none;\">{{EMAIL}}</a></span><span style=\"color:#B9C2C5;\">&nbsp;&nbsp;|&nbsp;&nbsp;</span><span style=\"white-space:nowrap;\"><a href=\"https://www.thespartancapitalgroup.com\" style=\"color:#0076A6;text-decoration:none;\">thespartancapitalgroup.com</a></span>\n  </td></tr>\n  <tr><td style=\"padding:16px 0 6px 0;line-height:0;font-size:0;\">\n    <a href=\"https://www.thespartancapitalgroup.com\" style=\"text-decoration:none;\"><img src=\"{{LOGO_URL}}\" width=\"208\" height=\"60\" alt=\"Spartan Capital Group\" border=\"0\" style=\"display:block;width:208px;height:60px;max-width:208px;border:0;outline:none;text-decoration:none;\"></a>\n  </td></tr>\n  <tr><td style=\"padding:0;font-family:Arial, Helvetica, sans-serif;font-size:11px;line-height:16px;color:#6B777A;\">North American Headquarters&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span style=\"white-space:nowrap;\">7550 S. Saginaw, Grand Blanc, MI 48439</span></td></tr>\n</table>";
+const BRANDS = {
+  scg:{name:"Spartan Capital Group", logo:"assets/spartan-capital-group-signature-logo-2x.png"},
+  sas:{name:"Spartan Advisory Solutions", logo:"assets/spartan-advisory-solutions-signature-logo-2x.png"},
+  ss: {name:"Spartan Strategies", logo:"assets/spartan-strategies-signature-logo-2x.png"}
+};
+const $ = id => document.getElementById(id);
+const isFile = location.protocol === "file:";
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function fmt(s){ const d=s.replace(/\D/g,""); const t=d.length===11&&d[0]==="1"?d.slice(1):d;
+  return t.length===10 ? t.slice(0,3)+"-"+t.slice(3,6)+"-"+t.slice(6) : s.trim(); }
+function values(){
+  const b = BRANDS[document.querySelector('input[name=brand]:checked').value];
+  return {b, NAME:$("name").value.trim()||"Your Name", TITLE:$("title").value.trim()||"Your Title",
+    COMPANY:b.name, DIRECT:fmt($("direct").value), MOBILE:fmt($("mobile").value),
+    EMAIL:$("email").value.trim()||"first.last@thespartancapitalgroup.com"};
+}
+function build(){
+  const v=values(); let h=TEMPLATE;
+  for (const k of ["DIRECT","MOBILE"]) if(!v[k]) h=h.replace(new RegExp("<!-- OPTIONAL START: "+k+" -->[\\s\\S]*?<!-- OPTIONAL END: "+k+" -->\\n?"),"");
+  h=h.replace(/<!--[\s\S]*?-->/g,"");
+  for (const k of ["NAME","TITLE","COMPANY","DIRECT","MOBILE","EMAIL"]) h=h.split("{{"+k+"}}").join(esc(v[k]));
+  h=h.split('alt="Spartan Capital Group"').join('alt="'+esc(v.b.name)+'"');
+  return h.split("{{LOGO_URL}}").join(new URL(v.b.logo, location.href).href);
+}
+function plain(){
+  const v=values(), ph=[];
+  if(v.DIRECT) ph.push("D "+v.DIRECT); if(v.MOBILE) ph.push("M "+v.MOBILE); ph.push("Main 800-340-9118");
+  return [v.NAME+" | "+v.TITLE, v.COMPANY, ph.join(" | "), v.EMAIL, "thespartancapitalgroup.com"].join("\n");
+}
+function render(){
+  $("sig").innerHTML=build();
+  const e=$("email").value.trim();
+  $("email-warn").hidden = !e || /@thespartancapitalgroup\.com$/i.test(e);
+}
+["name","title","email"].forEach(id=>$(id).addEventListener("input",render));
+["direct","mobile"].forEach(id=>{ $(id).addEventListener("input",render); $(id).addEventListener("blur",()=>{ $(id).value=fmt($(id).value); render(); }); });
+document.querySelectorAll("input[name=brand]").forEach(r=>r.addEventListener("change",render));
+function say(m){ $("status").textContent=m; clearTimeout(say.t); say.t=setTimeout(()=>$("status").textContent="",6000); }
+$("copy").addEventListener("click", async ()=>{
+  const h=build(); render();
+  try{
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([h],{type:"text/html"}),"text/plain":new Blob([plain()],{type:"text/plain"})})]);
+  }catch(e){
+    const r=document.createRange(); r.selectNodeContents($("sig")); const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+    let ok=false; try{ ok=document.execCommand("copy"); }catch(_){}
+    if(!ok){ say("Your browser blocked copying. The signature is selected: press Ctrl+C (Cmd+C on Mac)."); return; }
+    s.removeAllRanges();
+  }
+  say("Signature copied. Now paste it into your email settings (steps below).");
+});
+$("copytext").addEventListener("click", async ()=>{
+  const t=plain();
+  try{ await navigator.clipboard.writeText(t); }
+  catch(e){ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove(); }
+  say("Plain-text version copied. Paste it into your phone's signature setting.");
+});
+const tabs=[...document.querySelectorAll("[role=tab]")];
+function sel(t){ tabs.forEach(x=>{const on=x===t; x.setAttribute("aria-selected",on); x.tabIndex=on?0:-1; $(x.getAttribute("aria-controls")).hidden=!on;}); t.focus(); }
+tabs.forEach((t,i)=>{ t.onclick=()=>sel(t); t.onkeydown=e=>{ if(e.key==="ArrowRight") sel(tabs[(i+1)%tabs.length]); if(e.key==="ArrowLeft") sel(tabs[(i-1+tabs.length)%tabs.length]); }; });
+if(isFile) $("filewarn").style.display="block";
+render();
+</script>
+</body>
+</html>
