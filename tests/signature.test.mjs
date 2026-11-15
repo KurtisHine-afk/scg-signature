@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url)).replace(/\/?$/, "/");
 const read = (rel) => readFileSync(root + rel);
-const VITARMIS_URL = "https://kurtishine-afk.github.io/scg-signature/assets/vitarmis-signature-logo-2x.png";
+const VITARMIS_URL = "https://thespartancapitalgroup.com/wp-content/uploads/2026/11/vitarmis-horizontal.png";
 const EM = "\u2014";
 
 const ASSET_SHA256 = {
@@ -52,8 +52,8 @@ function checkAssets() {
   if (size.width !== 416 || size.height !== 120) throw new Error("Vitarmis logo is " + size.width + "x" + size.height);
   const page = read("index.html").toString("utf8");
   if (page.includes("\u2014") || page.includes("\u2013")) throw new Error("index.html contains a dash that is not a hyphen");
-  if (page.includes("vitarmis-horizontal.png")) throw new Error("family row still points at the WordPress Vitarmis file");
-  if (!page.includes(VITARMIS_URL)) throw new Error("family row is missing the GitHub Pages Vitarmis URL");
+  if (!page.includes(VITARMIS_URL)) throw new Error("family row is missing the approved Vitarmis logo");
+  if (!page.includes("assets/vitarmis-signature-logo-2x.png")) throw new Error("brand picker lost the local Vitarmis asset");
 }
 
 function startServer() {
@@ -209,6 +209,13 @@ async function main() {
       const familyHtml = await evaljs("build()");
       const familyPlain = await evaljs("plain()");
       assertEqual(familyHtml, kurtisHtml, "family html");
+      if (familyHtml.includes("text-align:center") || familyHtml.includes("margin:0 auto")) {
+        throw new Error("family signature is still centered");
+      }
+      if (!/^<table\b[^>]*\balign="left"/.test(familyHtml)) throw new Error("family table is missing align=left");
+      if (/font-weight:normal;">(?:&nbsp;|<span style="font-size:14\.4px)/.test(familyHtml)) {
+        throw new Error("family line has a leading indent");
+      }
       assertEqual(familyPlain, [
         "Kurtis Hine, Sr. | Founder & CEO",
         "Spartan Capital Group",
@@ -226,7 +233,7 @@ async function main() {
       const expectedImgs = [
         ["https://kurtishine-afk.github.io/scg-signature/assets/spartan-capital-group-signature-logo-2x.png", "208x60"],
         ["https://kurtishine-afk.github.io/scg-signature/assets/spartan-capital-group-signature-logo-2x.png", "70x20"],
-        [VITARMIS_URL, "70x20"],
+        [VITARMIS_URL, "87x19"],
         ["https://kurtishine-afk.github.io/scg-signature/assets/spartan-advisory-solutions-signature-logo-2x.png", "70x20"],
         ["https://kurtishine-afk.github.io/scg-signature/assets/spartan-strategies-signature-logo-2x.png", "70x20"],
       ];
@@ -266,6 +273,9 @@ async function main() {
       const escaped = await evaljs("build()");
       if (!escaped.includes("Tom &amp; &lt;Jen&gt;")) throw new Error("name was not escaped");
       if (!escaped.includes("VP &quot;East&quot;")) throw new Error("title was not escaped");
+      if (escaped.includes("text-align:center") || /font-weight:normal;">(?:&nbsp;|<span style="font-size:14\.4px)/.test(escaped)) {
+        throw new Error("optional phone line is indented or centered");
+      }
       if (escaped.includes(">DIRECT<")) throw new Error("empty direct line was kept");
       if (!escaped.includes(">MOBILE<") || !escaped.includes("313-555-0199")) throw new Error("mobile line missing");
       if (escaped.length >= 10000) throw new Error("family signature with mobile is " + escaped.length);
